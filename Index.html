@@ -1,327 +1,207 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Hawkeye Integrated Services</title>
-  <link rel="icon" type="image/x-icon" href="assests/images/HawkEyeLogo.jpeg">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <!-- Bootstrap 5 CDN -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <!-- FontAwesome Icons -->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
-  <!-- Animated Background CDN (Vanta.js) -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.waves.min.js"></script>
-  <style>
-    body {
-      font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
-      background: #131f3f;
-      color: #f4f7fa;
-      min-height: 100vh;
-    }
-    #hero {
-      position: relative;
-      height: 90vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #fff;
-      overflow: hidden;
-    }
-    .vanta-bg {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      z-index: 0;
-    }
-    .hero-content {
-      position: relative;
-      z-index: 1;
-      text-align: center;
-    }
-    .navbar-brand img {
-      height: 52px;
-      margin-right: 12px;
-    }
-    .service-card {
-      background: rgba(255,255,255,0.95);
-      color: #172446;
-      border-radius: 1rem;
-      box-shadow: 0 2px 14px rgba(20,40,100,0.08);
-      padding: 1.5rem 1rem;
-      margin-bottom: 2rem;
-      transition: transform 0.18s;
-    }
-    .service-card:hover {
-      transform: translateY(-5px) scale(1.04);
-      box-shadow: 0 5px 16px rgba(20,40,100,0.14);
-    }
-    .service-card i {
-      font-size: 2.2rem;
-      margin-bottom: 0.8rem;
-      color: #131f3f;
-    }
-    .section-title {
-      color: #172446;
-      letter-spacing: 1px;
-      font-weight: 700;
-      margin-top: 2rem;
-      margin-bottom: 1.5rem;
-    }
-    .testimonial {
-      background: #eef2fa;
-      color: #172446;
-      border-radius: 1rem;
-      padding: 1.5rem;
-      margin-bottom: 2rem;
-      box-shadow: 0 2px 12px rgba(20,40,100,0.05);
-    }
-    footer {
-      background: linear-gradient(to right,#131f3f, #172446);
-      color: #fff;
-      padding: 2rem 0 1rem 0;
-    }
-    .contact-form input, .contact-form textarea {
-      border-radius: 0.5rem;
-      border: 1.5px solid #131f3f;
-      margin-bottom: 1rem;
-    }
-    /* Responsive tweaks */
-    @media(max-width: 768px){
-      #hero { height: 50vh;}
-      .hero-content h1 { font-size: 2rem;}
-      .navbar-brand img { height:36px;}
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hawkeye Integrated Services | Cloud Duty Tracker</title>
+<style>
+:root{--navy:#10213b;--blue:#245eea;--bg:#f3f6fb;--ink:#172033;--muted:#64748b;--line:#dbe3ef;--green:#12805c;--red:#c24141;--amber:#a16207}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:Inter,system-ui,-apple-system,Segoe UI,Arial,sans-serif;color:var(--ink)}
+header{background:linear-gradient(120deg,#10213b,#214a88);color:white;padding:22px max(16px,calc((100% - 1180px)/2))}
+header h1{font-size:clamp(20px,4vw,28px);margin:0 0 5px}header p{margin:0;color:#dbeafe;font-size:13px}
+main{max-width:1180px;margin:18px auto;padding:0 14px 40px}.tabs{display:flex;gap:8px;overflow:auto;margin-bottom:16px}.tab{border:1px solid var(--line);background:#fff;padding:11px 15px;border-radius:10px;font-weight:700;white-space:nowrap;cursor:pointer}.tab.active{background:var(--blue);color:#fff;border-color:var(--blue)}
+.panel{display:none}.panel.active{display:block}.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:17px;margin-bottom:15px;box-shadow:0 3px 12px #13284a08}.card h2{font-size:17px;margin:0 0 13px}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.field{display:flex;flex-direction:column;gap:6px}.field label{font-size:12px;font-weight:750;color:#475569}.field input,.field select{width:100%;min-height:43px;padding:10px 11px;border:1px solid #cbd5e1;border-radius:8px;background:#fff;color:var(--ink);font:inherit}.btn{border:0;border-radius:8px;padding:11px 14px;background:var(--blue);color:#fff;font-weight:750;cursor:pointer;min-height:42px}.btn.secondary{background:#e8eef8;color:#17335f}.btn.danger{background:#fee2e2;color:#991b1b}.btn.green{background:var(--green)}.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:13px}.hint{font-size:12px;color:var(--muted);line-height:1.5}.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:15px}.stat{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px}.stat span{display:block;color:var(--muted);font-size:12px;font-weight:650}.stat strong{display:block;font-size:26px;margin-top:5px}.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:10px}table{border-collapse:collapse;width:100%;min-width:650px;background:#fff;font-size:13px}th,td{padding:11px 10px;border-bottom:1px solid #e8edf5;text-align:left}th{background:#eef3fa;color:#334155;font-size:11px;text-transform:uppercase;letter-spacing:.03em}tr:last-child td{border-bottom:0}.pill{display:inline-block;padding:4px 8px;border-radius:99px;font-size:11px;font-weight:800}.pill.green{background:#dcfce7;color:#166534}.pill.red{background:#fee2e2;color:#991b1b}.pill.amber{background:#fef3c7;color:#92400e}.notice{padding:11px 13px;background:#eff6ff;color:#1e40af;border-radius:9px;font-size:12px;line-height:1.5;margin-bottom:13px}.empty{padding:24px;text-align:center;color:var(--muted)}.section-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:12px}.section-head h2{margin:0}.small{font-size:11px;color:var(--muted)}@media(max-width:700px){main{margin-top:12px;padding:0 10px 28px}.grid{grid-template-columns:1fr 1fr}.stats{grid-template-columns:1fr 1fr}.card{padding:13px}.stat strong{font-size:23px}}@media(max-width:420px){.grid{grid-template-columns:1fr}.tabs{gap:6px}.tab{padding:10px 12px;font-size:12px}}
+</style>
 </head>
 <body>
-  <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top shadow-sm">
-    <div class="container">
-      <a class="navbar-brand" href="#">
-        <img src="assests/images/HawkEyeLogo.jpeg" alt="Hawkeye Logo">
-        HAWKEYE INTEGRATED SERVICES
-      </a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-        data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
-        aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-          <li class="nav-item"><a class="nav-link active" href="#hero">Home</a></li>
-          <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
-          <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
-          <li class="nav-item"><a class="nav-link" href="#testimonials">Testimonials</a></li>
-          <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
-        </ul>
-      </div>
-    </div>
-  </nav>
-
-  <!-- Hero Section with Animated Background -->
-  <section id="hero">
-    <div id="vanta-bg" class="vanta-bg"></div>
-    <div class="container hero-content">
-      <h1 class="display-4 fw-bold">Professional Security & Manpower Services</h1>
-      <p class="lead mt-3 mb-4">Safeguarding Businesses, Homes, and Institutions with Trusted Protection</p>
-      <a href="#contact" class="btn btn-danger btn-lg px-4 shadow-sm">Request a Quote</a>
-    </div>
-  </section>
-
-  <!-- Services Section -->
-  <section id="services" class="container py-5">
-    <h2 class="section-title text-center" style="color: #e3eaf7";>Our Services</h2>
-    <div class="row">
-      <div class="col-md-4">
-        <div class="service-card text-center">
-          <i class="fas fa-building"></i>
-          <h4>Corporate Offices</h4>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="service-card text-center">
-          <i class="fas fa-hotel"></i>
-          <h4>Hotels</h4>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="service-card text-center">
-          <i class="fas fa-home"></i>
-          <h4>Residential Apartments</h4>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="service-card text-center">
-          <i class="fas fa-shopping-cart"></i>
-          <h4>Shopping Malls</h4>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="service-card text-center">
-          <i class="fas fa-hospital"></i>
-          <h4>Hospitals</h4>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="service-card text-center">
-          <i class="fas fa-traffic-light"></i>
-          <h4>Traffic Management</h4>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="service-card text-center">
-          <i class="fas fa-industry"></i>
-          <h4>Industries</h4>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="service-card text-center">
-          <i class="fas fa-graduation-cap"></i>
-          <h4>Institutes & Commercial Complex</h4>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="service-card text-center">
-          <i class="fas fa-gem"></i>
-          <h4>Gold Loan Branches & Jewellers</h4>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="service-card text-center">
-          <i class="fas fa-road"></i>
-          <h4>Road Infrastructure</h4>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- About Section -->
-  <section id="about" class="container py-5">
-    <h2 class="section-title text-center" style="color: #e3eaf7";>About Us</h2>
-    <div class="row align-items-center">
-      <div class="col-md-6 mb-4">
-        <img src="assests/images/Security Team.jpg" class="img-fluid rounded shadow-sm" alt="Security Team">
-      </div>
-      <div class="col-md-6">
-        <p class="fs-5">Hawkeye Integrated Services provides trusted security and manpower solutions, supporting a wide range of industries. Our certified, vetted, and trained staff deliver round-the-clock reliability and peace of mind for corporate, residential, institutional, and retail clients.</p>
-        <ul>
-          <li>Professional, certified personnel</li>
-          <li>Custom security strategies</li>
-          <li>Transparent operational processes</li>
-        </ul>
-      </div>
-    </div>
-  </section>
-
-  <!-- Testimonials Section -->
-  <section id="testimonials" class="container py-5">
-    <h2 class="section-title text-center" style="color: #e3eaf7";>Testimonials</h2>
-    <div class="testimonial text-center">
-      <p>“Hawkeye’s team seamlessly integrated with our office and provided exceptional service. Highly recommended for any corporate security needs!”</p>
-      <strong>- Akash, CEO, TechSolutions Pvt Ltd</strong>
-    </div>
-    <div class="testimonial text-center">
-      <p>“Our residents feel safer thanks to Hawkeye's reliable guards and efficient response systems.”</p>
-      <strong>- Priya, Facility Manager, Skyline Apartments</strong>
-    </div>
-  </section>
-
-  <!-- Contact Section -->
-<section id="contact" class="container py-5">
-  <h2 class="section-title text-center" style="color: #e3eaf7";>Contact Us</h2>
-  <form 
-    class="contact-form col-md-8 mx-auto"
-    action="https://formsubmit.co/kalaburagidistrictfootballclub@gmail.com"
-    method="POST"
-  >
-    <input 
-      type="text" 
-      name="name" 
-      class="form-control" 
-      placeholder="Your Name" 
-      required
-    >
-    <input 
-      type="email" 
-      name="email" 
-      class="form-control" 
-      placeholder="Your Email" 
-      required
-    >
-    <input 
-      type="tel" 
-      name="phone" 
-      class="form-control" 
-      placeholder="Your Phone Number" 
-      required
-    >
-    <textarea 
-      class="form-control" 
-      name="message"
-      rows="4" 
-      placeholder="Your Message"
-      required
-    ></textarea>
-    <!-- Optional: redirect to thank you page after submit -->
-    <input type="hidden" name="_next" value="https://hawkeyeintegratedservices.netlify.app/">
-    <!-- Optional: disable spam CAPTCHA -->
-    <input type="hidden" name="_captcha" value="false">
-    <button 
-      type="submit" 
-      class="btn btn-primary btn-lg w-100 mt-2"
-    >
-      Send Message
-    </button>
-  </form>
+<header><h1>Hawkeye Integrated Services</h1><p>Mobile Duty & Attendance Tracker · Daily entries, unit strength and monthly salary counts</p></header>
+<main>
+<div class="notice"><b>Cloud database:</b> Records are stored in Supabase. Export CSV backups regularly; the free tier does not guarantee automatic backups and may pause inactive projects.</div>
+<section class="card" id="loginCard"><h2>Supervisor sign in</h2><p class="hint">Enter your User ID and password. Accounts are created by the admin in Supabase Dashboard → Authentication → Users.</p><div class="grid"><div class="field"><label for="loginEmail">User ID</label><input type="text" id="loginEmail" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false" placeholder="User ID"></div><div class="field"><label for="loginPassword">Password</label><input type="password" id="loginPassword" autocomplete="current-password" placeholder="Password"></div><div class="field" style="justify-content:end"><button class="btn" id="loginBtn">Sign in</button></div></div><p id="connectionStatus" class="hint">Enter your Supabase details in the code first.</p></section>
+<div class="actions" id="sessionActions" style="display:none"><span class="hint" id="signedInAs"></span><button class="btn secondary" id="refreshCloud">Refresh cloud data</button><button class="btn danger" id="logoutBtn">Sign out</button></div>
+<div id="appContent" style="display:none"><nav class="tabs">
+<button class="tab active" data-tab="daily">Daily Entry</button><button class="tab" data-tab="dashboard">Monthly Dashboard</button><button class="tab" data-tab="units">Units & Guards</button><button class="tab" data-tab="records">Attendance Records</button>
+</nav>
+<section class="panel active" id="daily">
+<div class="card"><h2>Mark today's attendance</h2>
+<div class="grid">
+<div class="field"><label for="dutyDate">Duty date (defaults to today)</label><input type="date" id="dutyDate"></div>
+<div class="field"><label for="dutyUnit">Site / unit</label><select id="dutyUnit"></select></div>
+<div class="field"><label for="dutyGuard">Guard name (unique roster)</label><select id="dutyGuard"></select></div>
+</div>
+<div class="actions"><button class="btn green" id="markPresent">✓ Mark Present (P)</button><button class="btn secondary" id="clearEntry">Clear selection</button></div>
+<p class="hint">Supervisors only need to mark guards who are present. No entry means no present duty is counted. The same guard can work at different units on different dates; each present unit/date entry counts as one duty.</p>
+</div>
+<div class="stats"><div class="stat"><span>Present entries for selected date</span><strong id="dayPresent">0</strong></div><div class="stat"><span>Guards expected at selected site</span><strong id="siteExpected">0</strong></div><div class="stat"><span>Present at selected site</span><strong id="sitePresent">0</strong></div><div class="stat"><span>Vacancies at selected site</span><strong id="siteVacant">0</strong></div></div>
+<div class="card"><div class="section-head"><h2>Selected site's daily status</h2><span class="small" id="dailySubtitle"></span></div><div class="table-wrap"><table><thead><tr><th>Guard</th><th>Site</th><th>Date</th><th>Status</th><th>Action</th></tr></thead><tbody id="dailyRows"></tbody></table></div></div>
 </section>
+<section class="panel" id="dashboard">
+<div class="card"><h2>Monthly salary duty count</h2><div class="grid"><div class="field"><label for="reportMonth">Month</label><input type="month" id="reportMonth"></div><div class="field"><label for="reportSearch">Search guard</label><input type="search" id="reportSearch" placeholder="Type a guard name"></div><div class="field"><label for="reportUnit">Filter by unit</label><select id="reportUnit"><option value="ALL">All units (overall total)</option></select></div></div><p class="hint">Overall duty count combines every site for each uniquely named guard. Example: 20 Toyota duties + 5 Honda duties = 25 total duties.</p></div>
+<div class="stats"><div class="stat"><span>Unique guards</span><strong id="mGuards">0</strong></div><div class="stat"><span>Present duties</span><strong id="mDuties">0</strong></div><div class="stat"><span>Sites / units</span><strong id="mUnits">0</strong></div><div class="stat"><span>Sites with vacancies</span><strong id="mVacancies">0</strong></div></div>
+<div class="card"><h2>Guard-wise duty summary</h2><div class="table-wrap"><table><thead><tr><th>Guard name</th><th>Duty count</th><th>Units worked</th><th>Unit-wise breakdown</th></tr></thead><tbody id="guardSummary"></tbody></table></div></div>
+<div class="card"><h2>Unit-wise strength & vacancies</h2><div class="table-wrap"><table><thead><tr><th>Site / unit</th><th>Required guards</th><th>Unique guards on site roster</th><th>Present duties this month</th><th>Present today</th><th>Vacancies today</th><th>Status</th></tr></thead><tbody id="unitSummary"></tbody></table></div></div>
+<div class="actions"><button class="btn secondary" id="exportCsv">Export monthly report (CSV)</button></div>
+</section>
+<section class="panel" id="units">
+<div class="card"><h2>Add a site / unit</h2><div class="grid"><div class="field"><label for="newUnit">Site / unit name</label><input id="newUnit" placeholder="e.g. Toyota Gulbarga"></div><div class="field"><label for="unitCapacity">Required guard strength</label><input id="unitCapacity" type="number" min="0" step="1" value="0" placeholder="e.g. 5"></div><div class="field"><label for="unitSupervisor">Supervisor (optional)</label><input id="unitSupervisor" placeholder="Supervisor name"></div></div><div class="actions"><button class="btn" id="addUnit">Add site</button></div></div>
+<div class="card"><h2>Add a guard to the unique roster</h2><div class="grid"><div class="field"><label for="newGuard">Guard's full name</label><input id="newGuard" placeholder="e.g. Sanganna"></div><div class="field"><label for="rosterUnit">Assign to site / unit</label><select id="rosterUnit"></select></div></div><div class="actions"><button class="btn" id="addGuard">Add guard / assign site</button></div><p class="hint">Guard names are checked without case sensitivity to avoid duplicates. Use a distinct full name or employee ID if two people share the same name. Assigning a guard to a unit does not itself count as attendance.</p></div>
+<div class="card"><h2>Site roster and required strength</h2><div class="table-wrap"><table><thead><tr><th>Site</th><th>Required strength</th><th>Roster count</th><th>Supervisor</th><th>Actions</th></tr></thead><tbody id="rosterRows"></tbody></table></div></div>
+<div class="card"><h2>Unique guard list</h2><div class="table-wrap"><table><thead><tr><th>Guard name</th><th>Assigned sites</th><th>Actions</th></tr></thead><tbody id="allGuards"></tbody></table></div></div>
+</section>
+<section class="panel" id="records">
+<div class="card"><div class="section-head"><h2>Attendance records</h2><button class="btn secondary" id="exportAllCsv">Export all records (CSV)</button></div><div class="grid"><div class="field"><label for="recordsMonth">Month</label><input type="month" id="recordsMonth"></div><div class="field"><label for="recordsUnit">Site / unit</label><select id="recordsUnit"><option value="ALL">All sites</option></select></div><div class="field"><label for="recordsGuard">Guard search</label><input type="search" id="recordsGuard" placeholder="Search name"></div></div><div class="table-wrap" style="margin-top:13px"><table><thead><tr><th>Date</th><th>Guard</th><th>Site</th><th>Status</th><th>Action</th></tr></thead><tbody id="recordsRows"></tbody></table></div></div>
+</section>
+<p class="small">Hawkeye Integrated Services · Check monthly totals before processing salary.</p>
+</div>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+// Replace these two placeholders with your Supabase Project URL and publishable/anon key.
+const SUPABASE_URL = 'https://bleamlparltmqnudlerf.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_vT6l2BSYjWFcvf-ZQuDVBA_CjSfFqa9';
+// User IDs typed without "@" get this domain added automatically.
+// Example: typing "Shivraya" signs in as shivraya@hawkeye.com (create that exact user in Supabase).
+const LOGIN_DOMAIN = '@hawkeye.com';
+const KEY='hawkeye_duty_tracker_v1';
+const todayLocal=()=>{const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`};
+const monthLocal=()=>todayLocal().slice(0,7);
+let state={units:[],guards:[],attendance:[]};
+let cloudClient=null, cloudReady=false, saveQueue=Promise.resolve();
+const statusEl=()=>document.getElementById('connectionStatus');
+function setStatus(message,isError=false){const el=statusEl();if(el){el.textContent=message;el.style.color=isError?'#b91c1c':'#64748b'}}
+function localBackup(){try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){console.warn('Local backup unavailable',e)}}
+function save(){localBackup();renderAll();if(cloudReady)queueCloudSave()}
+function queueCloudSave(){
+  // This simple shared-state mode is safest when one supervisor edits at a time.
+  saveQueue=saveQueue.then(async()=>{
+    const {data:{user}}=await cloudClient.auth.getUser();if(!user)throw new Error('Session expired. Please sign in again.');
+    const payload={id:'main',state:JSON.parse(JSON.stringify(state)),updated_at:new Date().toISOString(),updated_by:user.id};
+    const {error}=await cloudClient.from('hawkeye_app_state').upsert(payload,{onConflict:'id'});if(error)throw error;
+    setStatus('Connected · Saved to Supabase at '+new Date().toLocaleTimeString());
+  }).catch(err=>{console.error(err);setStatus('CLOUD SAVE FAILED: '+(err.message||String(err))+'. Export a CSV backup and retry.',true);alert('Cloud save failed. Latest changes remain in this browser for now. Export a CSV backup and fix the connection. Details: '+(err.message||String(err))) });
+  return saveQueue;
+}
+async function loadCloudState(){
+  setStatus('Loading attendance data from Supabase…');
+  const {data,error}=await cloudClient.from('hawkeye_app_state').select('state').eq('id','main').maybeSingle();if(error)throw error;
+  if(data&&data.state){state={units:[],guards:[],attendance:[],...data.state};localBackup()}
+  else{
+    try{const saved=localStorage.getItem(KEY);if(saved)state={...state,...JSON.parse(saved)}}catch(e){}
+    const {data:{user}}=await cloudClient.auth.getUser();
+    const {error:insertError}=await cloudClient.from('hawkeye_app_state').insert({id:'main',state,updated_by:user.id});
+    if(insertError&&insertError.code!=='23505')throw insertError;
+    if(insertError?.code==='23505'){const {data:latest,error:readErr}=await cloudClient.from('hawkeye_app_state').select('state').eq('id','main').single();if(readErr)throw readErr;state={units:[],guards:[],attendance:[],...latest.state}}
+    localBackup();
+  }
+  cloudReady=true;document.getElementById('appContent').style.display='block';document.getElementById('sessionActions').style.display='flex';document.getElementById('loginCard').style.display='none';
+  const {data:{user}}=await cloudClient.auth.getUser();
+  const shownId=(user?.email||'supervisor').split('@')[0];
+  document.getElementById('signedInAs').textContent='Signed in: '+shownId;renderAll();setStatus('Connected · Cloud data loaded. Export CSV backups regularly.');
+}
+async function refreshCloud(){try{cloudReady=false;await loadCloudState()}catch(e){console.error(e);setStatus('Could not load cloud data: '+(e.message||String(e)),true);alert('Cloud refresh failed: '+(e.message||String(e)))}}
+async function signIn(){
+  let email=document.getElementById('loginEmail').value.trim().toLowerCase();
+  const password=document.getElementById('loginPassword').value;
+  if(email&&!email.includes('@'))email+=LOGIN_DOMAIN;
+  if(!cloudClient){setStatus('Paste your Supabase URL and publishable/anon key into the code, then reload.',true);return}if(!email||!password){setStatus('Enter User ID and password.',true);return}
+  setStatus('Signing in…');const {error}=await cloudClient.auth.signInWithPassword({email,password});if(error){setStatus('Sign in failed: '+error.message,true);return}
+  try{await loadCloudState()}catch(e){setStatus('Database connection failed: '+(e.message||String(e)),true);alert('Database connection failed. Check SQL setup and your project URL/key. Details: '+(e.message||String(e)))}
+}
+async function signOut(){cloudReady=false;await cloudClient.auth.signOut();document.getElementById('appContent').style.display='none';document.getElementById('sessionActions').style.display='none';document.getElementById('loginCard').style.display='block';document.getElementById('loginPassword').value='';setStatus('Signed out. Cloud data remains in Supabase.')}
 
-
-  <!-- Footer -->
-  <footer class="text-center mt-5">
-    <div class="container">
-      <p>© 2025 HAWKEYE INTEGRATED SERVICES | All Rights Reserved</p>
-      <!-- <p>
-        <a href="#"><i class="fab fa-facebook-f mx-2"></i></a>
-        <a href="#"><i class="fab fa-twitter mx-2"></i></a>
-        <a href="#"><i class="fab fa-linkedin-in mx-2"></i></a>
-        <a href="#"><i class="fab fa-instagram mx-2"></i></a>
-      </p> -->
-  <p>
-    Contact: 
-   <a href="mailto:hawkeyeintegratedservices@gmail.com">
-  <i class="fa fa-envelope" aria-hidden="true"></i>hawkeyeintegratedservices@gmail.com
-</a> 
-    <i class="fa fa-phone" aria-hidden="true"></i> +91 7406195535
-  </p>
-
-<!-- Include Font Awesome CSS in your <head> if not already -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    </div>
-  </footer>
-
-  <!-- Bootstrap JS CDN -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-  <!-- Animated Background JS -->
-  <script>
-    VANTA.WAVES({
-      el: "#vanta-bg",
-      color: 0x131f3f,
-      shininess: 24.0,
-      waveHeight: 24.0,
-      waveSpeed: 1.6,
-      zoom: 1.3,
-      backgroundColor: 0x172446,
-    });
-  </script>
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function norm(s){return String(s||'').trim().toLocaleLowerCase()}
+function unitById(id){return state.units.find(u=>u.id===id)}
+function guardById(id){return state.guards.find(g=>g.id===id)}
+function unitRoster(u){return state.guards.filter(g=>(g.unitIds||[]).includes(u.id))}
+function attendanceFor(date,unitId){return state.attendance.filter(a=>a.date===date&&(!unitId||a.unitId===unitId))}
+function presentGuardDateUnit(guardId,date,unitId){return state.attendance.some(a=>a.guardId===guardId&&a.date===date&&a.unitId===unitId)}
+function fillSelect(el,items,placeholder){const old=el.value;el.innerHTML=(placeholder?`<option value="">${esc(placeholder)}</option>`:'')+items.map(x=>`<option value="${esc(x.value)}">${esc(x.label)}</option>`).join('');if(items.some(x=>x.value===old))el.value=old}
+function refreshSelects(){
+ const unitItems=state.units.map(u=>({value:u.id,label:u.name}));
+ fillSelect(document.getElementById('dutyUnit'),unitItems,'Select a site');
+ fillSelect(document.getElementById('rosterUnit'),unitItems,'Select a site');
+ fillSelect(document.getElementById('reportUnit'),[{value:'ALL',label:'All units (overall total)'},...unitItems]);
+ fillSelect(document.getElementById('recordsUnit'),[{value:'ALL',label:'All sites'},...unitItems]);
+ updateGuardSelect();
+}
+function updateGuardSelect(){
+ const unitId=document.getElementById('dutyUnit').value;
+ const guards=state.guards.filter(g=>!unitId||(g.unitIds||[]).includes(unitId)).map(g=>({value:g.id,label:g.name}));
+ fillSelect(document.getElementById('dutyGuard'),guards,'Select a guard');
+}
+function markPresent(){
+ const date=document.getElementById('dutyDate').value,unitId=document.getElementById('dutyUnit').value,guardId=document.getElementById('dutyGuard').value;
+ if(!date||!unitId||!guardId){alert('Please select the date, site and guard.');return}
+ if(!unitById(unitId)||!guardById(guardId)){alert('Selected site or guard is no longer available.');return}
+ if(presentGuardDateUnit(guardId,date,unitId)){alert('This guard is already marked present at this site on this date.');return}
+ state.attendance.push({id:crypto.randomUUID?crypto.randomUUID():String(Date.now())+Math.random(),date,unitId,guardId,status:'P',createdAt:new Date().toISOString()});save();
+}
+function removeAttendance(id){if(confirm('Remove this attendance entry?')){state.attendance=state.attendance.filter(a=>a.id!==id);save()}}
+function addUnit(){
+ const name=document.getElementById('newUnit').value.trim(),capacity=Number(document.getElementById('unitCapacity').value),supervisor=document.getElementById('unitSupervisor').value.trim();
+ if(!name){alert('Enter a site / unit name.');return}if(state.units.some(u=>norm(u.name)===norm(name))){alert('That site already exists.');return}
+ state.units.push({id:crypto.randomUUID?crypto.randomUUID():String(Date.now()),name,capacity:Math.max(0,Math.floor(capacity||0)),supervisor});document.getElementById('newUnit').value='';document.getElementById('unitCapacity').value='0';document.getElementById('unitSupervisor').value='';save();
+}
+function addGuard(){
+ const name=document.getElementById('newGuard').value.trim(),unitId=document.getElementById('rosterUnit').value;
+ if(!name||!unitId){alert('Enter the guard name and select a site.');return}
+ let guard=state.guards.find(g=>norm(g.name)===norm(name));
+ if(!guard){guard={id:crypto.randomUUID?crypto.randomUUID():String(Date.now())+Math.random(),name,unitIds:[]};state.guards.push(guard)}
+ if(!guard.unitIds.includes(unitId))guard.unitIds.push(unitId);
+ document.getElementById('newGuard').value='';save();
+}
+function assignGuard(guardId){const g=guardById(guardId);if(!g)return;const options=state.units.map((u,i)=>`${i+1}. ${u.name}`).join('\n');const choice=prompt('Enter the number of the site to assign this guard:\n'+options);if(choice===null)return;const u=state.units[Number(choice)-1];if(!u){alert('Invalid site number.');return}if(!g.unitIds.includes(u.id))g.unitIds.push(u.id);save()}
+function removeGuard(guardId){const g=guardById(guardId);if(!g)return;if(!confirm(`Delete ${g.name} from the roster? Past attendance records will remain but monthly totals may no longer show this guard name.`))return;state.guards=state.guards.filter(x=>x.id!==guardId);save()}
+function editUnit(id){const u=unitById(id);if(!u)return;const name=prompt('Site / unit name:',u.name);if(name===null)return;if(!name.trim())return alert('Site name cannot be blank.');if(state.units.some(x=>x.id!==id&&norm(x.name)===norm(name))){alert('That site already exists.');return}const cap=prompt('Required guard strength:',String(u.capacity));if(cap===null)return;const sup=prompt('Supervisor name:',u.supervisor||'');if(sup===null)return;u.name=name.trim();u.capacity=Math.max(0,Math.floor(Number(cap)||0));u.supervisor=sup.trim();save()}
+function deleteUnit(id){const u=unitById(id);if(!u)return;if(!confirm(`Delete ${u.name}? Its attendance records will remain in the stored data but will not appear in unit summaries.`))return;state.units=state.units.filter(x=>x.id!==id);state.guards.forEach(g=>g.unitIds=g.unitIds.filter(x=>x!==id));save()}
+function monthEntries(month){return state.attendance.filter(a=>a.date.startsWith(month))}
+function renderDaily(){
+ const date=document.getElementById('dutyDate').value||todayLocal(),unitId=document.getElementById('dutyUnit').value,u=unitById(unitId);
+ const all=attendanceFor(date),site=attendanceFor(date,unitId);
+ document.getElementById('dayPresent').textContent=all.length;document.getElementById('siteExpected').textContent=u?u.capacity:0;document.getElementById('sitePresent').textContent=site.length;document.getElementById('siteVacant').textContent=u?Math.max(0,u.capacity-site.length):0;
+ document.getElementById('dailySubtitle').textContent=`${date} · ${u?u.name:'No site selected'}`;
+ const rows=site.slice().sort((a,b)=>(guardById(a.guardId)?.name||'').localeCompare(guardById(b.guardId)?.name||''));
+ document.getElementById('dailyRows').innerHTML=rows.length?rows.map(a=>`<tr><td>${esc(guardById(a.guardId)?.name||'Guard removed')}</td><td>${esc(unitById(a.unitId)?.name||'Site removed')}</td><td>${esc(a.date)}</td><td><span class="pill green">PRESENT</span></td><td><button class="btn danger" onclick="removeAttendance('${esc(a.id)}')">Undo</button></td></tr>`).join(''):'<tr><td colspan="5" class="empty">No present entries for this site and date yet.</td></tr>';
+}
+function renderDashboard(){
+ const month=document.getElementById('reportMonth').value||monthLocal(),query=norm(document.getElementById('reportSearch').value),filter=document.getElementById('reportUnit').value||'ALL',entries=monthEntries(month);
+ const filteredEntries=filter==='ALL'?entries:entries.filter(a=>a.unitId===filter);
+ const summaries=state.guards.map(g=>{const es=filteredEntries.filter(a=>a.guardId===g.id);const by={};es.forEach(a=>{const u=unitById(a.unitId);const name=u?u.name:'Site removed';by[name]=(by[name]||0)+1});return {g,count:es.length,by,units:Object.keys(by)}}).filter(x=>x.g&&(!query||norm(x.g.name).includes(query))).sort((a,b)=>b.count-a.count||a.g.name.localeCompare(b.g.name));
+ document.getElementById('mGuards').textContent=new Set(filteredEntries.map(a=>a.guardId)).size;document.getElementById('mDuties').textContent=filteredEntries.length;document.getElementById('mUnits').textContent=(filter==='ALL'?state.units:state.units.filter(u=>u.id===filter)).length;
+ const today=todayLocal(),vacantUnits=state.units.filter(u=>u.capacity>attendanceFor(today,u.id).length&&(!filter||filter==='ALL'||u.id===filter));document.getElementById('mVacancies').textContent=vacantUnits.length;
+ document.getElementById('guardSummary').innerHTML=summaries.length?summaries.map(x=>`<tr><td><b>${esc(x.g.name)}</b></td><td><b>${x.count}</b></td><td>${x.units.length}</td><td>${Object.entries(x.by).map(([n,c])=>`${esc(n)}: ${c}`).join(' · ')||'—'}</td></tr>`).join(''):'<tr><td colspan="4" class="empty">No matching duties for this month.</td></tr>';
+ const us=state.units.filter(u=>filter==='ALL'||u.id===filter);
+ document.getElementById('unitSummary').innerHTML=us.length?us.map(u=>{const roster=unitRoster(u).length,monthCount=entries.filter(a=>a.unitId===u.id).length,todayCount=attendanceFor(today,u.id).length,vac=Math.max(0,u.capacity-todayCount);return `<tr><td><b>${esc(u.name)}</b></td><td>${u.capacity}</td><td>${roster}</td><td>${monthCount}</td><td>${todayCount}</td><td><b>${vac}</b></td><td>${vac?'<span class="pill amber">UNDERSTRENGTH</span>':'<span class="pill green">FILLED</span>'}</td></tr>`}).join(''):'<tr><td colspan="7" class="empty">Add sites in Units & Guards.</td></tr>';
+}
+function renderRoster(){
+ document.getElementById('rosterRows').innerHTML=state.units.length?state.units.map(u=>`<tr><td><b>${esc(u.name)}</b></td><td>${u.capacity}</td><td>${unitRoster(u).length}</td><td>${esc(u.supervisor||'—')}</td><td><button class="btn secondary" onclick="editUnit('${esc(u.id)}')">Edit</button> <button class="btn danger" onclick="deleteUnit('${esc(u.id)}')">Delete</button></td></tr>`).join(''):'<tr><td colspan="5" class="empty">No sites added yet.</td></tr>';
+ document.getElementById('allGuards').innerHTML=state.guards.length?state.guards.slice().sort((a,b)=>a.name.localeCompare(b.name)).map(g=>`<tr><td><b>${esc(g.name)}</b></td><td>${(g.unitIds||[]).map(id=>unitById(id)?.name).filter(Boolean).map(esc).join(', ')||'Not assigned'}</td><td><button class="btn secondary" onclick="assignGuard('${esc(g.id)}')">Assign site</button> <button class="btn danger" onclick="removeGuard('${esc(g.id)}')">Delete</button></td></tr>`).join(''):'<tr><td colspan="3" class="empty">No guards added yet.</td></tr>';
+}
+function renderRecords(){
+ const month=document.getElementById('recordsMonth').value||monthLocal(),unit=document.getElementById('recordsUnit').value||'ALL',q=norm(document.getElementById('recordsGuard').value);
+ const rows=state.attendance.filter(a=>a.date.startsWith(month)&&(unit==='ALL'||a.unitId===unit)&&norm(guardById(a.guardId)?.name||'').includes(q)).sort((a,b)=>b.date.localeCompare(a.date));
+ document.getElementById('recordsRows').innerHTML=rows.length?rows.map(a=>`<tr><td>${esc(a.date)}</td><td>${esc(guardById(a.guardId)?.name||'Guard removed')}</td><td>${esc(unitById(a.unitId)?.name||'Site removed')}</td><td><span class="pill green">P</span></td><td><button class="btn danger" onclick="removeAttendance('${esc(a.id)}')">Undo</button></td></tr>`).join(''):'<tr><td colspan="5" class="empty">No records match these filters.</td></tr>';
+}
+function renderAll(){refreshSelects();renderDaily();renderDashboard();renderRoster();renderRecords()}
+function csvDownload(filename,rows){const csv=rows.map(row=>row.map(v=>'"'+String(v??'').replace(/"/g,'""')+'"').join(',')).join('\r\n');const blob=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8;'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=filename;a.click();URL.revokeObjectURL(url)}
+function exportMonthly(){const month=document.getElementById('reportMonth').value||monthLocal(),filter=document.getElementById('reportUnit').value||'ALL',es=monthEntries(month).filter(a=>filter==='ALL'||a.unitId===filter);const rows=[['Month','Guard name','Site','Date','Duty count']];const tally={};es.forEach(a=>{const key=a.guardId; if(!tally[key])tally[key]={name:guardById(key)?.name||'Guard removed',sites:{},count:0};const site=unitById(a.unitId)?.name||'Site removed';tally[key].sites[site]=(tally[key].sites[site]||0)+1;tally[key].count++});Object.values(tally).forEach(x=>rows.push([month,x.name,Object.entries(x.sites).map(([s,c])=>`${s}: ${c}`).join('; '),'',x.count]));es.forEach(a=>rows.push([month,guardById(a.guardId)?.name||'Guard removed',unitById(a.unitId)?.name||'Site removed',a.date,1]));csvDownload(`Hawkeye_Monthly_Duties_${month}.csv`,rows)}
+function exportAll(){const rows=[['Date','Guard name','Site','Status']];state.attendance.slice().sort((a,b)=>a.date.localeCompare(b.date)).forEach(a=>rows.push([a.date,guardById(a.guardId)?.name||'Guard removed',unitById(a.unitId)?.name||'Site removed','P']));csvDownload('Hawkeye_All_Attendance.csv',rows)}
+document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x===b));document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('active',p.id===b.dataset.tab));renderAll()}));
+document.getElementById('markPresent').addEventListener('click',markPresent);document.getElementById('clearEntry').addEventListener('click',()=>{document.getElementById('dutyGuard').value=''});
+document.getElementById('addUnit').addEventListener('click',addUnit);document.getElementById('addGuard').addEventListener('click',addGuard);
+document.getElementById('dutyUnit').addEventListener('change',()=>{updateGuardSelect();renderDaily()});document.getElementById('dutyDate').addEventListener('change',renderDaily);
+['reportMonth','reportSearch','reportUnit'].forEach(id=>document.getElementById(id).addEventListener('input',renderDashboard));
+['recordsMonth','recordsUnit','recordsGuard'].forEach(id=>document.getElementById(id).addEventListener('input',renderRecords));
+document.getElementById('exportCsv').addEventListener('click',exportMonthly);document.getElementById('exportAllCsv').addEventListener('click',exportAll);
+document.getElementById('dutyDate').value=todayLocal();document.getElementById('reportMonth').value=monthLocal();document.getElementById('recordsMonth').value=monthLocal();
+document.getElementById('loginBtn').addEventListener('click',signIn);
+document.getElementById('loginPassword').addEventListener('keydown',e=>{if(e.key==='Enter')signIn()});
+document.getElementById('logoutBtn').addEventListener('click',signOut);
+document.getElementById('refreshCloud').addEventListener('click',refreshCloud);
+if(!SUPABASE_URL.startsWith('https://')||SUPABASE_URL.includes('PASTE_')||SUPABASE_ANON_KEY.includes('PASTE_'))setStatus('Setup needed: paste your Supabase Project URL and publishable/anon key into the two constants near the top of this file.',true);
+else if(!window.supabase)setStatus('Supabase library failed to load. Check internet connection and reload.',true);
+else{cloudClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);cloudClient.auth.getSession().then(async({data,error})=>{if(error){setStatus(error.message,true);return}if(data.session){try{await loadCloudState()}catch(e){setStatus('Database connection failed: '+(e.message||String(e)),true)}}else setStatus('Ready. Sign in with your User ID and password.')})}
+</script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
