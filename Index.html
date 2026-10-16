@@ -126,9 +126,18 @@ function refreshSelects(){
  updateGuardSelect();
 }
 function updateGuardSelect(){
- const unitId=document.getElementById('dutyUnit').value;
- const guards=state.guards.filter(g=>!unitId||(g.unitIds||[]).includes(unitId)).map(g=>({value:g.id,label:g.name}));
- fillSelect(document.getElementById('dutyGuard'),guards,'Select a guard');
+ // Shows ALL guards so a guard from one site can be marked present at another site.
+ // Guards on the selected site's roster are listed first, then everyone else.
+ const el=document.getElementById('dutyGuard'),unitId=document.getElementById('dutyUnit').value,old=el.value;
+ const sorted=state.guards.slice().sort((a,b)=>a.name.localeCompare(b.name));
+ const opt=g=>`<option value="${esc(g.id)}">${esc(g.name)}</option>`;
+ const own=unitId?sorted.filter(g=>(g.unitIds||[]).includes(unitId)):[];
+ const others=unitId?sorted.filter(g=>!(g.unitIds||[]).includes(unitId)):sorted;
+ let html='<option value="">Select a guard</option>';
+ if(own.length)html+=`<optgroup label="This site's guards">${own.map(opt).join('')}</optgroup>`;
+ if(others.length)html+=`<optgroup label="${own.length?'Other guards (all sites)':'All guards'}">${others.map(opt).join('')}</optgroup>`;
+ el.innerHTML=html;
+ if(sorted.some(g=>g.id===old))el.value=old;
 }
 function markPresent(){
  const date=document.getElementById('dutyDate').value,unitId=document.getElementById('dutyUnit').value,guardId=document.getElementById('dutyGuard').value;
