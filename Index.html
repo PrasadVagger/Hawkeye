@@ -11,6 +11,10 @@ header{background:linear-gradient(120deg,#10213b,#214a88);color:white;padding:22
 header h1{font-size:clamp(20px,4vw,28px);margin:0 0 5px}header p{margin:0;color:#dbeafe;font-size:13px}
 main{max-width:1180px;margin:18px auto;padding:0 14px 40px}.tabs{display:flex;gap:8px;overflow:auto;margin-bottom:16px}.tab{border:1px solid var(--line);background:#fff;padding:11px 15px;border-radius:10px;font-weight:700;white-space:nowrap;cursor:pointer}.tab.active{background:var(--blue);color:#fff;border-color:var(--blue)}
 .panel{display:none}.panel.active{display:block}.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:17px;margin-bottom:15px;box-shadow:0 3px 12px #13284a08}.card h2{font-size:17px;margin:0 0 13px}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.field{display:flex;flex-direction:column;gap:6px}.field label{font-size:12px;font-weight:750;color:#475569}.field input,.field select{width:100%;min-height:43px;padding:10px 11px;border:1px solid #cbd5e1;border-radius:8px;background:#fff;color:var(--ink);font:inherit}.btn{border:0;border-radius:8px;padding:11px 14px;background:var(--blue);color:#fff;font-weight:750;cursor:pointer;min-height:42px}.btn.secondary{background:#e8eef8;color:#17335f}.btn.danger{background:#fee2e2;color:#991b1b}.btn.green{background:var(--green)}.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:13px}.hint{font-size:12px;color:var(--muted);line-height:1.5}.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:15px}.stat{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px}.stat span{display:block;color:var(--muted);font-size:12px;font-weight:650}.stat strong{display:block;font-size:26px;margin-top:5px}.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:10px}table{border-collapse:collapse;width:100%;min-width:650px;background:#fff;font-size:13px}th,td{padding:11px 10px;border-bottom:1px solid #e8edf5;text-align:left}th{background:#eef3fa;color:#334155;font-size:11px;text-transform:uppercase;letter-spacing:.03em}tr:last-child td{border-bottom:0}.pill{display:inline-block;padding:4px 8px;border-radius:99px;font-size:11px;font-weight:800}.pill.green{background:#dcfce7;color:#166534}.pill.red{background:#fee2e2;color:#991b1b}.pill.amber{background:#fef3c7;color:#92400e}.notice{padding:11px 13px;background:#eff6ff;color:#1e40af;border-radius:9px;font-size:12px;line-height:1.5;margin-bottom:13px}.empty{padding:24px;text-align:center;color:var(--muted)}.section-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:12px}.section-head h2{margin:0}.small{font-size:11px;color:var(--muted)}@media(max-width:700px){main{margin-top:12px;padding:0 10px 28px}.grid{grid-template-columns:1fr 1fr}.stats{grid-template-columns:1fr 1fr}.card{padding:13px}.stat strong{font-size:23px}}@media(max-width:420px){.grid{grid-template-columns:1fr}.tabs{gap:6px}.tab{padding:10px 12px;font-size:12px}}
+/* Live Sheet */
+.sc{cursor:pointer;user-select:none;text-align:center;font-weight:800;min-width:32px;padding:7px 2px;font-size:12px}
+.sc:hover{filter:brightness(.93)}.sc-P{background:#dcfce7;color:#166534}.sc-2D{background:#fef3c7;color:#92400e;font-size:10px}.sc-A{background:#fee2e2;color:#991b1b}.sc-off{background:#f1f5f9;color:#94a3b8}
+#sheetTable th,#sheetTable td{text-align:center;padding:6px 3px}#sheetTable td.nm,#sheetTable th.nm{text-align:left;white-space:nowrap;min-width:140px;position:sticky;left:0;background:#fff}
 </style>
 </head>
 <body>
@@ -20,27 +24,39 @@ main{max-width:1180px;margin:18px auto;padding:0 14px 40px}.tabs{display:flex;ga
 <section class="card" id="loginCard"><h2>Supervisor sign in</h2><p class="hint">Enter your User ID and password. Accounts are created by the admin in Supabase Dashboard → Authentication → Users.</p><div class="grid"><div class="field"><label for="loginEmail">User ID</label><input type="text" id="loginEmail" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false" placeholder="User ID"></div><div class="field"><label for="loginPassword">Password</label><input type="password" id="loginPassword" autocomplete="current-password" placeholder="Password"></div><div class="field" style="justify-content:end"><button class="btn" id="loginBtn">Sign in</button></div></div><p id="connectionStatus" class="hint">Enter your Supabase details in the code first.</p></section>
 <div class="actions" id="sessionActions" style="display:none"><span class="hint" id="signedInAs"></span><button class="btn secondary" id="refreshCloud">Refresh cloud data</button><button class="btn danger" id="logoutBtn">Sign out</button></div>
 <div id="appContent" style="display:none"><nav class="tabs">
-<button class="tab active" data-tab="daily">Daily Entry</button><button class="tab" data-tab="dashboard">Monthly Dashboard</button><button class="tab" data-tab="units">Units & Guards</button><button class="tab" data-tab="records">Attendance Records</button>
+<button class="tab active" data-tab="daily">Daily Entry</button><button class="tab" data-tab="sheet">Live Sheet</button><button class="tab" data-tab="dashboard">Monthly Dashboard</button><button class="tab" data-tab="units">Units & Guards</button><button class="tab" data-tab="records">Attendance Records</button>
 </nav>
 <section class="panel active" id="daily">
 <div class="card"><h2>Mark today's attendance</h2>
 <div class="grid">
 <div class="field"><label for="dutyDate">Duty date (defaults to today)</label><input type="date" id="dutyDate"></div>
 <div class="field"><label for="dutyUnit">Site / unit</label><select id="dutyUnit"></select></div>
-<div class="field"><label for="dutyGuard">Guard name (unique roster)</label><select id="dutyGuard"></select></div>
+<div class="field"><label for="dutyGuard">Guard name (any site's guard)</label><select id="dutyGuard"></select></div>
+<div class="field"><label for="dutyType">Duty type</label><select id="dutyType"><option value="P">Present (P) · 1 shift</option><option value="2D">Double Duty / OT (2D) · 2 shifts</option><option value="A">Absent (A)</option></select></div>
 </div>
-<div class="actions"><button class="btn green" id="markPresent">✓ Mark Present (P)</button><button class="btn secondary" id="clearEntry">Clear selection</button></div>
-<p class="hint">Supervisors only need to mark guards who are present. No entry means no present duty is counted. The same guard can work at different units on different dates; each present unit/date entry counts as one duty.</p>
+<div class="actions"><button class="btn green" id="markPresent">✓ Save Attendance</button><button class="btn secondary" id="clearEntry">Clear selection</button></div>
+<p class="hint">Choose the duty type: Present (P) = 1 shift, Double Duty / OT (2D) = 2 shifts that day, Absent (A) = 0. Saving the same guard, site and date again simply changes the duty type. Any guard can be marked at any site. No entry means off / not worked. Total shifts = regular days + OT shifts.</p>
 </div>
 <div class="stats"><div class="stat"><span>Present entries for selected date</span><strong id="dayPresent">0</strong></div><div class="stat"><span>Guards expected at selected site</span><strong id="siteExpected">0</strong></div><div class="stat"><span>Present at selected site</span><strong id="sitePresent">0</strong></div><div class="stat"><span>Vacancies at selected site</span><strong id="siteVacant">0</strong></div></div>
 <div class="card"><div class="section-head"><h2>Selected site's daily status</h2><span class="small" id="dailySubtitle"></span></div><div class="table-wrap"><table><thead><tr><th>Guard</th><th>Site</th><th>Date</th><th>Status</th><th>Action</th></tr></thead><tbody id="dailyRows"></tbody></table></div></div>
 </section>
+<section class="panel" id="sheet">
+<div class="card"><h2>Live attendance sheet</h2>
+<div class="grid">
+<div class="field"><label for="sheetUnit">Site / unit</label><select id="sheetUnit"></select></div>
+<div class="field"><label for="sheetMonth">Month</label><input type="month" id="sheetMonth"></div>
+<div class="field"><label for="sheetSearch">Search guard</label><input type="search" id="sheetSearch" placeholder="Guard name"></div>
+</div>
+<div class="actions"><button class="btn green" id="sheetExcel">⬇ Download Excel for this unit</button></div>
+<p class="hint">Tap a cell to cycle: - (off) → P (present) → 2D (double duty) → A (absent) → - . Every tap saves to the cloud. Guards on this site's roster, plus anyone marked here this month, appear as rows. Add new guards in Units & Guards.</p></div>
+<div class="card"><div class="table-wrap"><table id="sheetTable" style="min-width:900px"><thead id="sheetHead"></thead><tbody id="sheetBody"></tbody></table></div></div>
+</section>
 <section class="panel" id="dashboard">
 <div class="card"><h2>Monthly salary duty count</h2><div class="grid"><div class="field"><label for="reportMonth">Month</label><input type="month" id="reportMonth"></div><div class="field"><label for="reportSearch">Search guard</label><input type="search" id="reportSearch" placeholder="Type a guard name"></div><div class="field"><label for="reportUnit">Filter by unit</label><select id="reportUnit"><option value="ALL">All units (overall total)</option></select></div></div><p class="hint">Overall duty count combines every site for each uniquely named guard. Example: 20 Toyota duties + 5 Honda duties = 25 total duties.</p></div>
-<div class="stats"><div class="stat"><span>Unique guards</span><strong id="mGuards">0</strong></div><div class="stat"><span>Present duties</span><strong id="mDuties">0</strong></div><div class="stat"><span>Sites / units</span><strong id="mUnits">0</strong></div><div class="stat"><span>Sites with vacancies</span><strong id="mVacancies">0</strong></div></div>
-<div class="card"><h2>Guard-wise duty summary</h2><div class="table-wrap"><table><thead><tr><th>Guard name</th><th>Duty count</th><th>Units worked</th><th>Unit-wise breakdown</th></tr></thead><tbody id="guardSummary"></tbody></table></div></div>
-<div class="card"><h2>Unit-wise strength & vacancies</h2><div class="table-wrap"><table><thead><tr><th>Site / unit</th><th>Required guards</th><th>Unique guards on site roster</th><th>Present duties this month</th><th>Present today</th><th>Vacancies today</th><th>Status</th></tr></thead><tbody id="unitSummary"></tbody></table></div></div>
-<div class="actions"><button class="btn secondary" id="exportCsv">Export monthly report (CSV)</button></div>
+<div class="stats"><div class="stat"><span>Unique guards</span><strong id="mGuards">0</strong></div><div class="stat"><span>Total shifts (incl. OT)</span><strong id="mDuties">0</strong></div><div class="stat"><span>Sites / units</span><strong id="mUnits">0</strong></div><div class="stat"><span>Sites with vacancies</span><strong id="mVacancies">0</strong></div></div>
+<div class="card"><h2>Guard-wise duty summary</h2><div class="table-wrap"><table><thead><tr><th>Guard name</th><th>Reg days</th><th>OT shifts</th><th>Total shifts</th><th>Units worked</th><th>Unit-wise shifts</th></tr></thead><tbody id="guardSummary"></tbody></table></div></div>
+<div class="card"><h2>Unit-wise strength & vacancies</h2><div class="table-wrap"><table><thead><tr><th>Site / unit</th><th>Required guards</th><th>Unique guards on site roster</th><th>Shifts this month (incl. OT)</th><th>Present today</th><th>Vacancies today</th><th>Status</th><th>Attendance sheet</th></tr></thead><tbody id="unitSummary"></tbody></table></div></div>
+<div class="card"><h2>Download attendance sheets (Excel)</h2><p class="hint">Each unit gets its own Excel file for the selected month, so you can attach it to that unit's bill. Use the <b>⬇ Excel</b> button in the unit table above for one unit, or download all units at once as separate files.</p><div class="actions"><button class="btn green" id="exportAllUnits">⬇ Download every unit separately (one Excel file each)</button><button class="btn secondary" id="exportCsv">Combined workbook (Summary + all units)</button></div></div>
 </section>
 <section class="panel" id="units">
 <div class="card"><h2>Add a site / unit</h2><div class="grid"><div class="field"><label for="newUnit">Site / unit name</label><input id="newUnit" placeholder="e.g. Toyota Gulbarga"></div><div class="field"><label for="unitCapacity">Required guard strength</label><input id="unitCapacity" type="number" min="0" step="1" value="0" placeholder="e.g. 5"></div><div class="field"><label for="unitSupervisor">Supervisor (optional)</label><input id="unitSupervisor" placeholder="Supervisor name"></div></div><div class="actions"><button class="btn" id="addUnit">Add site</button></div></div>
@@ -49,12 +65,13 @@ main{max-width:1180px;margin:18px auto;padding:0 14px 40px}.tabs{display:flex;ga
 <div class="card"><h2>Unique guard list</h2><div class="table-wrap"><table><thead><tr><th>Guard name</th><th>Assigned sites</th><th>Actions</th></tr></thead><tbody id="allGuards"></tbody></table></div></div>
 </section>
 <section class="panel" id="records">
-<div class="card"><div class="section-head"><h2>Attendance records</h2><button class="btn secondary" id="exportAllCsv">Export all records (CSV)</button></div><div class="grid"><div class="field"><label for="recordsMonth">Month</label><input type="month" id="recordsMonth"></div><div class="field"><label for="recordsUnit">Site / unit</label><select id="recordsUnit"><option value="ALL">All sites</option></select></div><div class="field"><label for="recordsGuard">Guard search</label><input type="search" id="recordsGuard" placeholder="Search name"></div></div><div class="table-wrap" style="margin-top:13px"><table><thead><tr><th>Date</th><th>Guard</th><th>Site</th><th>Status</th><th>Action</th></tr></thead><tbody id="recordsRows"></tbody></table></div></div>
+<div class="card"><div class="section-head"><h2>Attendance records</h2><div class="actions" style="margin:0"><button class="btn green" id="exportRecordsXl">⬇ Excel (date-wise sheet, 1 page)</button></div></div><div class="grid"><div class="field"><label for="recordsMonth">Month</label><input type="month" id="recordsMonth"></div><div class="field"><label for="recordsUnit">Site / unit</label><select id="recordsUnit"><option value="ALL">All sites</option></select></div><div class="field"><label for="recordsGuard">Guard search</label><input type="search" id="recordsGuard" placeholder="Search name"></div></div><div class="table-wrap" style="margin-top:13px"><table><thead><tr><th>Date</th><th>Guard</th><th>Site</th><th>Status</th><th>Action</th></tr></thead><tbody id="recordsRows"></tbody></table></div></div>
 </section>
 <p class="small">Hawkeye Integrated Services · Check monthly totals before processing salary.</p>
 </div>
 </main>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js"></script>
 <script>
 // Replace these two placeholders with your Supabase Project URL and publishable/anon key.
 const SUPABASE_URL = 'https://bleamlparltmqnudlerf.supabase.co';
@@ -121,6 +138,7 @@ function refreshSelects(){
  const unitItems=state.units.map(u=>({value:u.id,label:u.name}));
  fillSelect(document.getElementById('dutyUnit'),unitItems,'Select a site');
  fillSelect(document.getElementById('rosterUnit'),unitItems,'Select a site');
+ fillSelect(document.getElementById('sheetUnit'),unitItems,'Select a site');
  fillSelect(document.getElementById('reportUnit'),[{value:'ALL',label:'All units (overall total)'},...unitItems]);
  fillSelect(document.getElementById('recordsUnit'),[{value:'ALL',label:'All sites'},...unitItems]);
  updateGuardSelect();
@@ -139,12 +157,27 @@ function updateGuardSelect(){
  el.innerHTML=html;
  if(sorted.some(g=>g.id===old))el.value=old;
 }
+// Duty status: 'P' = present (1 shift), '2D' = double duty / OT (2 shifts), 'A' = absent (0 shifts).
+function shiftsOf(a){return a.status==='2D'?2:(a.status==='A'?0:1)}
+function isPresent(a){return a.status!=='A'}
+function presentHeads(date,unitId){return attendanceFor(date,unitId).filter(isPresent)}
+function statusPill(a){return a.status==='2D'?'<span class="pill amber">2D · DOUBLE DUTY</span>':(a.status==='A'?'<span class="pill red">ABSENT</span>':'<span class="pill green">PRESENT</span>')}
+// Per guard: regular days = distinct dates worked, OT shifts = extra shifts beyond one per date, total = all shifts.
+function summarize(entries){
+ const m={};
+ entries.forEach(a=>{const s=shiftsOf(a);const x=m[a.guardId]||(m[a.guardId]={dates:new Set(),total:0,by:{}});
+  if(s>0){x.dates.add(a.date);const n=unitById(a.unitId)?.name||'Site removed';x.by[n]=(x.by[n]||0)+s}x.total+=s});
+ Object.values(m).forEach(x=>{x.reg=x.dates.size;x.ot=x.total-x.reg});
+ return m;
+}
 function markPresent(){
- const date=document.getElementById('dutyDate').value,unitId=document.getElementById('dutyUnit').value,guardId=document.getElementById('dutyGuard').value;
+ const date=document.getElementById('dutyDate').value,unitId=document.getElementById('dutyUnit').value,guardId=document.getElementById('dutyGuard').value,type=document.getElementById('dutyType').value||'P';
  if(!date||!unitId||!guardId){alert('Please select the date, site and guard.');return}
  if(!unitById(unitId)||!guardById(guardId)){alert('Selected site or guard is no longer available.');return}
- if(presentGuardDateUnit(guardId,date,unitId)){alert('This guard is already marked present at this site on this date.');return}
- state.attendance.push({id:crypto.randomUUID?crypto.randomUUID():String(Date.now())+Math.random(),date,unitId,guardId,status:'P',createdAt:new Date().toISOString()});save();
+ const existing=state.attendance.find(a=>a.guardId===guardId&&a.date===date&&a.unitId===unitId);
+ if(existing){existing.status=type;existing.updatedAt=new Date().toISOString()}
+ else state.attendance.push({id:crypto.randomUUID?crypto.randomUUID():String(Date.now())+Math.random(),date,unitId,guardId,status:type,createdAt:new Date().toISOString()});
+ save();
 }
 function removeAttendance(id){if(confirm('Remove this attendance entry?')){state.attendance=state.attendance.filter(a=>a.id!==id);save()}}
 function addUnit(){
@@ -167,21 +200,22 @@ function deleteUnit(id){const u=unitById(id);if(!u)return;if(!confirm(`Delete ${
 function monthEntries(month){return state.attendance.filter(a=>a.date.startsWith(month))}
 function renderDaily(){
  const date=document.getElementById('dutyDate').value||todayLocal(),unitId=document.getElementById('dutyUnit').value,u=unitById(unitId);
- const all=attendanceFor(date),site=attendanceFor(date,unitId);
+ const all=attendanceFor(date).filter(isPresent),siteAll=attendanceFor(date,unitId),site=siteAll.filter(isPresent);
  document.getElementById('dayPresent').textContent=all.length;document.getElementById('siteExpected').textContent=u?u.capacity:0;document.getElementById('sitePresent').textContent=site.length;document.getElementById('siteVacant').textContent=u?Math.max(0,u.capacity-site.length):0;
  document.getElementById('dailySubtitle').textContent=`${date} · ${u?u.name:'No site selected'}`;
- const rows=site.slice().sort((a,b)=>(guardById(a.guardId)?.name||'').localeCompare(guardById(b.guardId)?.name||''));
- document.getElementById('dailyRows').innerHTML=rows.length?rows.map(a=>`<tr><td>${esc(guardById(a.guardId)?.name||'Guard removed')}</td><td>${esc(unitById(a.unitId)?.name||'Site removed')}</td><td>${esc(a.date)}</td><td><span class="pill green">PRESENT</span></td><td><button class="btn danger" onclick="removeAttendance('${esc(a.id)}')">Undo</button></td></tr>`).join(''):'<tr><td colspan="5" class="empty">No present entries for this site and date yet.</td></tr>';
+ const rows=siteAll.slice().sort((a,b)=>(guardById(a.guardId)?.name||'').localeCompare(guardById(b.guardId)?.name||''));
+ document.getElementById('dailyRows').innerHTML=rows.length?rows.map(a=>`<tr><td>${esc(guardById(a.guardId)?.name||'Guard removed')}</td><td>${esc(unitById(a.unitId)?.name||'Site removed')}</td><td>${esc(a.date)}</td><td>${statusPill(a)}</td><td><button class="btn danger" onclick="removeAttendance('${esc(a.id)}')">Undo</button></td></tr>`).join(''):'<tr><td colspan="5" class="empty">No present entries for this site and date yet.</td></tr>';
 }
 function renderDashboard(){
  const month=document.getElementById('reportMonth').value||monthLocal(),query=norm(document.getElementById('reportSearch').value),filter=document.getElementById('reportUnit').value||'ALL',entries=monthEntries(month);
  const filteredEntries=filter==='ALL'?entries:entries.filter(a=>a.unitId===filter);
- const summaries=state.guards.map(g=>{const es=filteredEntries.filter(a=>a.guardId===g.id);const by={};es.forEach(a=>{const u=unitById(a.unitId);const name=u?u.name:'Site removed';by[name]=(by[name]||0)+1});return {g,count:es.length,by,units:Object.keys(by)}}).filter(x=>x.g&&(!query||norm(x.g.name).includes(query))).sort((a,b)=>b.count-a.count||a.g.name.localeCompare(b.g.name));
- document.getElementById('mGuards').textContent=new Set(filteredEntries.map(a=>a.guardId)).size;document.getElementById('mDuties').textContent=filteredEntries.length;document.getElementById('mUnits').textContent=(filter==='ALL'?state.units:state.units.filter(u=>u.id===filter)).length;
- const today=todayLocal(),vacantUnits=state.units.filter(u=>u.capacity>attendanceFor(today,u.id).length&&(!filter||filter==='ALL'||u.id===filter));document.getElementById('mVacancies').textContent=vacantUnits.length;
- document.getElementById('guardSummary').innerHTML=summaries.length?summaries.map(x=>`<tr><td><b>${esc(x.g.name)}</b></td><td><b>${x.count}</b></td><td>${x.units.length}</td><td>${Object.entries(x.by).map(([n,c])=>`${esc(n)}: ${c}`).join(' · ')||'—'}</td></tr>`).join(''):'<tr><td colspan="4" class="empty">No matching duties for this month.</td></tr>';
+ const sum=summarize(filteredEntries);
+ const summaries=state.guards.map(g=>{const s=sum[g.id]||{reg:0,ot:0,total:0,by:{}};return {g,reg:s.reg,ot:s.ot,count:s.total,by:s.by,units:Object.keys(s.by)}}).filter(x=>x.g&&(!query||norm(x.g.name).includes(query))).sort((a,b)=>b.count-a.count||a.g.name.localeCompare(b.g.name));
+ document.getElementById('mGuards').textContent=new Set(filteredEntries.filter(isPresent).map(a=>a.guardId)).size;document.getElementById('mDuties').textContent=filteredEntries.reduce((n,a)=>n+shiftsOf(a),0);document.getElementById('mUnits').textContent=(filter==='ALL'?state.units:state.units.filter(u=>u.id===filter)).length;
+ const today=todayLocal(),vacantUnits=state.units.filter(u=>u.capacity>presentHeads(today,u.id).length&&(!filter||filter==='ALL'||u.id===filter));document.getElementById('mVacancies').textContent=vacantUnits.length;
+ document.getElementById('guardSummary').innerHTML=summaries.length?summaries.map(x=>`<tr><td><b>${esc(x.g.name)}</b></td><td>${x.reg}</td><td>${x.ot?`<b style="color:#a16207">${x.ot}</b>`:0}</td><td><b>${x.count}</b></td><td>${x.units.length}</td><td>${Object.entries(x.by).map(([n,c])=>`${esc(n)}: ${c}`).join(' · ')||'—'}</td></tr>`).join(''):'<tr><td colspan="6" class="empty">No matching duties for this month.</td></tr>';
  const us=state.units.filter(u=>filter==='ALL'||u.id===filter);
- document.getElementById('unitSummary').innerHTML=us.length?us.map(u=>{const roster=unitRoster(u).length,monthCount=entries.filter(a=>a.unitId===u.id).length,todayCount=attendanceFor(today,u.id).length,vac=Math.max(0,u.capacity-todayCount);return `<tr><td><b>${esc(u.name)}</b></td><td>${u.capacity}</td><td>${roster}</td><td>${monthCount}</td><td>${todayCount}</td><td><b>${vac}</b></td><td>${vac?'<span class="pill amber">UNDERSTRENGTH</span>':'<span class="pill green">FILLED</span>'}</td></tr>`}).join(''):'<tr><td colspan="7" class="empty">Add sites in Units & Guards.</td></tr>';
+ document.getElementById('unitSummary').innerHTML=us.length?us.map(u=>{const roster=unitRoster(u).length,monthCount=entries.filter(a=>a.unitId===u.id).reduce((n,a)=>n+shiftsOf(a),0),todayCount=presentHeads(today,u.id).length,vac=Math.max(0,u.capacity-todayCount);return `<tr><td><b>${esc(u.name)}</b></td><td>${u.capacity}</td><td>${roster}</td><td>${monthCount}</td><td>${todayCount}</td><td><b>${vac}</b></td><td>${vac?'<span class="pill amber">UNDERSTRENGTH</span>':'<span class="pill green">FILLED</span>'}</td><td><button class="btn secondary" onclick="exportUnitExcel('${esc(u.id)}')">⬇ Excel</button></td></tr>`}).join(''):'<tr><td colspan="8" class="empty">Add sites in Units & Guards.</td></tr>';
 }
 function renderRoster(){
  document.getElementById('rosterRows').innerHTML=state.units.length?state.units.map(u=>`<tr><td><b>${esc(u.name)}</b></td><td>${u.capacity}</td><td>${unitRoster(u).length}</td><td>${esc(u.supervisor||'—')}</td><td><button class="btn secondary" onclick="editUnit('${esc(u.id)}')">Edit</button> <button class="btn danger" onclick="deleteUnit('${esc(u.id)}')">Delete</button></td></tr>`).join(''):'<tr><td colspan="5" class="empty">No sites added yet.</td></tr>';
@@ -190,19 +224,242 @@ function renderRoster(){
 function renderRecords(){
  const month=document.getElementById('recordsMonth').value||monthLocal(),unit=document.getElementById('recordsUnit').value||'ALL',q=norm(document.getElementById('recordsGuard').value);
  const rows=state.attendance.filter(a=>a.date.startsWith(month)&&(unit==='ALL'||a.unitId===unit)&&norm(guardById(a.guardId)?.name||'').includes(q)).sort((a,b)=>b.date.localeCompare(a.date));
- document.getElementById('recordsRows').innerHTML=rows.length?rows.map(a=>`<tr><td>${esc(a.date)}</td><td>${esc(guardById(a.guardId)?.name||'Guard removed')}</td><td>${esc(unitById(a.unitId)?.name||'Site removed')}</td><td><span class="pill green">P</span></td><td><button class="btn danger" onclick="removeAttendance('${esc(a.id)}')">Undo</button></td></tr>`).join(''):'<tr><td colspan="5" class="empty">No records match these filters.</td></tr>';
+ document.getElementById('recordsRows').innerHTML=rows.length?rows.map(a=>`<tr><td>${esc(a.date)}</td><td>${esc(guardById(a.guardId)?.name||'Guard removed')}</td><td>${esc(unitById(a.unitId)?.name||'Site removed')}</td><td>${statusPill(a)}</td><td><button class="btn danger" onclick="removeAttendance('${esc(a.id)}')">Undo</button></td></tr>`).join(''):'<tr><td colspan="5" class="empty">No records match these filters.</td></tr>';
 }
-function renderAll(){refreshSelects();renderDaily();renderDashboard();renderRoster();renderRecords()}
+function renderAll(){refreshSelects();renderDaily();renderDashboard();renderRoster();renderRecords();renderSheet()}
 function csvDownload(filename,rows){const csv=rows.map(row=>row.map(v=>'"'+String(v??'').replace(/"/g,'""')+'"').join(',')).join('\r\n');const blob=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8;'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=filename;a.click();URL.revokeObjectURL(url)}
-function exportMonthly(){const month=document.getElementById('reportMonth').value||monthLocal(),filter=document.getElementById('reportUnit').value||'ALL',es=monthEntries(month).filter(a=>filter==='ALL'||a.unitId===filter);const rows=[['Month','Guard name','Site','Date','Duty count']];const tally={};es.forEach(a=>{const key=a.guardId; if(!tally[key])tally[key]={name:guardById(key)?.name||'Guard removed',sites:{},count:0};const site=unitById(a.unitId)?.name||'Site removed';tally[key].sites[site]=(tally[key].sites[site]||0)+1;tally[key].count++});Object.values(tally).forEach(x=>rows.push([month,x.name,Object.entries(x.sites).map(([s,c])=>`${s}: ${c}`).join('; '),'',x.count]));es.forEach(a=>rows.push([month,guardById(a.guardId)?.name||'Guard removed',unitById(a.unitId)?.name||'Site removed',a.date,1]));csvDownload(`Hawkeye_Monthly_Duties_${month}.csv`,rows)}
-function exportAll(){const rows=[['Date','Guard name','Site','Status']];state.attendance.slice().sort((a,b)=>a.date.localeCompare(b.date)).forEach(a=>rows.push([a.date,guardById(a.guardId)?.name||'Guard removed',unitById(a.unitId)?.name||'Site removed','P']));csvDownload('Hawkeye_All_Attendance.csv',rows)}
+function monthLabel(m){const [y,mo]=m.split('-').map(Number);return new Date(y,mo-1,1).toLocaleString('en-US',{month:'long'})+' '+y}
+function daysInMonth(m){const [y,mo]=m.split('-').map(Number);return new Date(y,mo,0).getDate()}
+function colLetter(n){let s='';while(n>0){const r=(n-1)%26;s=String.fromCharCode(65+r)+s;n=Math.floor((n-1)/26)}return s}
+function safeSheetName(name,used){const base=String(name||'Sheet').replace(/[\\\/\?\*\[\]:]/g,' ').trim().slice(0,28)||'Sheet';let n=base,i=2;while(used.has(n.toLowerCase())){n=base.slice(0,26)+' '+i;i++}used.add(n.toLowerCase());return n}
+function downloadBlob(filename,blob){const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=filename;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1500)}
+const fileSafe=s=>String(s).replace(/[^A-Za-z0-9]+/g,'_').replace(/^_+|_+$/g,'');
+
+// ---- shared Excel styling helpers ----
+function xlKit(){
+ const thin={style:'thin',color:{argb:'FF94A3B8'}},border={top:thin,left:thin,bottom:thin,right:thin};
+ const fill=argb=>({type:'pattern',pattern:'solid',fgColor:{argb}});
+ const center={horizontal:'center',vertical:'middle'};
+ const styleHead=c=>{c.fill=fill('FF10213B');c.font={bold:true,color:{argb:'FFFFFFFF'},size:10};c.alignment={...center,wrapText:true};c.border=border};
+ const styleDay=(c,v)=>{c.alignment=center;c.border=border;
+  if(v==='P'){c.fill=fill('FFDCFCE7');c.font={bold:true,color:{argb:'FF166534'}}}
+  else if(v==='2D'){c.fill=fill('FFFEF3C7');c.font={bold:true,color:{argb:'FF92400E'},size:9}}
+  else if(v==='A'){c.fill=fill('FFFEE2E2');c.font={bold:true,color:{argb:'FF991B1B'}}}
+  else{c.font={color:{argb:'FF94A3B8'}}}};
+ const banner=(ws,row,text,lastCol,size,bold,argb,height)=>{ws.mergeCells(row,1,row,lastCol);const c=ws.getCell(row,1);c.value=text;c.font={bold,size,color:{argb}};c.alignment=center;ws.getRow(row).height=height};
+ const byName=(a,b)=>a.name.localeCompare(b.name);
+ return {border,fill,center,styleHead,styleDay,banner,byName};
+}
+function newWorkbook(){const wb=new ExcelJS.Workbook();wb.creator='Hawkeye Integrated Services';wb.created=new Date();return wb}
+async function saveWorkbook(wb,filename){const buf=await wb.xlsx.writeBuffer();downloadBlob(filename,new Blob([buf],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}))}
+function excelReady(){if(!window.ExcelJS){alert('Excel library failed to load. Check your internet connection and reload the page.');return false}return true}
+
+// ---- one unit's monthly attendance sheet (P / 2D / A / -, Reg Days, OT Shifts, Total Shifts) ----
+function addUnitSheet(wb,u,month,used,q){
+ const {border,fill,center,styleHead,styleDay,banner,byName}=xlKit();
+ const D=daysInMonth(month),label=monthLabel(month);
+ const lastCol=D+5,regCol=D+3,otCol=D+4,totCol=D+5;
+ const ws=wb.addWorksheet(safeSheetName(u.name,used),{views:[{state:'frozen',xSplit:2,ySplit:4}]});
+ banner(ws,1,'Hawkeye Integrated Services — Monthly Attendance Sheet',lastCol,15,true,'FF10213B',28);
+ banner(ws,2,`Site: ${u.name}   |   Month: ${label}   |   Supervisor: ${u.supervisor||'—'}   |   Required strength: ${u.capacity}`,lastCol,11,true,'FF334155',22);
+ banner(ws,3,'P = Present   |   A = Absent   |   2D = Double Duty / OT (2 shifts)   |   - = Off / Not worked',lastCol,9,false,'FF64748B',18);
+ const head=['Sr','Guard Name'];for(let d=1;d<=D;d++)head.push(d);head.push('Reg Days','OT Shifts','Total Shifts');
+ head.forEach((h,i)=>{const c=ws.getCell(4,i+1);c.value=h;styleHead(c)});
+ ws.getRow(4).height=28;
+ const ue=monthEntries(month).filter(a=>a.unitId===u.id);
+ const ids=new Set([...unitRoster(u).map(g=>g.id),...ue.map(a=>a.guardId)]);
+ const gs=[...ids].map(guardById).filter(g=>g&&(!q||norm(g.name).includes(q))).sort(byName);
+ const dayTotals=new Array(D+1).fill(0);let sumReg=0,sumOt=0;
+ // Row height is grown/shrunk so the sheet fills the whole A4 landscape page (usable ~1060px wide x ~540pt tall)
+ const sumW=5+24+D*3.8+9+9+10,widthPx=7*sumW+5*lastCol,scale=Math.min(1,1060/widthPx);
+ const rowH=Math.max(18,Math.min(44,(540/scale-185)/Math.max(gs.length,1)));
+ gs.forEach((g,i)=>{
+  const r=5+i,byDay={};ws.getRow(r).height=rowH;
+  ue.filter(a=>a.guardId===g.id).forEach(a=>{byDay[Number(a.date.slice(8,10))]=a.status});
+  ws.getCell(r,1).value=i+1;ws.getCell(r,1).alignment=center;ws.getCell(r,1).border=border;
+  const nc=ws.getCell(r,2);nc.value=g.name;nc.font={bold:true,size:12};nc.border=border;nc.alignment={vertical:'middle',horizontal:'left'};
+  let reg=0,ot=0;
+  for(let d=1;d<=D;d++){
+   const st=byDay[d];const v=st==='2D'?'2D':(st==='A'?'A':(st?'P':'-'));
+   const c=ws.getCell(r,2+d);c.value=v;styleDay(c,v);
+   if(v==='P'){reg++;dayTotals[d]+=1}else if(v==='2D'){reg++;ot++;dayTotals[d]+=1}
+  }
+  sumReg+=reg;sumOt+=ot;
+  const range=`${colLetter(3)}${r}:${colLetter(2+D)}${r}`;
+  const c1=ws.getCell(r,regCol),c2=ws.getCell(r,otCol),c3=ws.getCell(r,totCol);
+  c1.value={formula:`COUNTIF(${range},"P")+COUNTIF(${range},"2D")`,result:reg};
+  c2.value={formula:`COUNTIF(${range},"2D")`,result:ot};
+  c3.value={formula:`${colLetter(regCol)}${r}+${colLetter(otCol)}${r}`,result:reg+ot};
+  [c1,c2,c3].forEach(c=>{c.alignment=center;c.border=border;c.font={bold:true}});
+  c2.font={bold:true,color:{argb:ot>0?'FF92400E':'FF64748B'}};c3.font={bold:true,color:{argb:'FF1D4ED8'}};
+ });
+ const t=5+gs.length;
+ if(gs.length){
+  ws.getCell(t,2).value='Guards on duty (per day)';
+  for(let d=1;d<=D;d++){const col=colLetter(2+d);const c=ws.getCell(t,2+d);
+   c.value={formula:`COUNTIF(${col}5:${col}${t-1},"P")+COUNTIF(${col}5:${col}${t-1},"2D")`,result:dayTotals[d]}}
+  ws.getCell(t,regCol).value={formula:`SUM(${colLetter(regCol)}5:${colLetter(regCol)}${t-1})`,result:sumReg};
+  ws.getCell(t,otCol).value={formula:`SUM(${colLetter(otCol)}5:${colLetter(otCol)}${t-1})`,result:sumOt};
+  ws.getCell(t,totCol).value={formula:`SUM(${colLetter(totCol)}5:${colLetter(totCol)}${t-1})`,result:sumReg+sumOt};
+ }else{ws.getCell(t,2).value='No guards on this site yet'}
+ for(let c=1;c<=lastCol;c++){const cell=ws.getCell(t,c);cell.fill=fill('FFEEF3FA');cell.border=border;cell.font={bold:true,size:c>2&&c<=2+D?9:10};cell.alignment=c===2?{vertical:'middle',horizontal:'left'}:center}
+ const sr=t+3,third=Math.floor(lastCol/3);
+ const sig=(from,to,text)=>{ws.mergeCells(sr,from,sr,to);const c=ws.getCell(sr,from);c.value=text;c.font={bold:true,size:10};c.alignment={horizontal:'center',vertical:'top'};for(let k=from;k<=to;k++)ws.getCell(sr,k).border={top:{style:'thin',color:{argb:'FF334155'}}}};
+ sig(1,third,`Supervisor: ${u.supervisor||'______________'}`);
+ sig(third+1,2*third,'Client Representative Sign & Stamp');
+ sig(2*third+1,lastCol,'Hawkeye Integrated Services');
+ ws.getRow(sr).height=24;
+ ws.getColumn(1).width=5;ws.getColumn(2).width=24;
+ for(let d=1;d<=D;d++)ws.getColumn(2+d).width=3.8;
+ ws.getColumn(regCol).width=9;ws.getColumn(otCol).width=9;ws.getColumn(totCol).width=10;ws.getRow(t).height=20;
+ ws.pageSetup={orientation:'landscape',paperSize:9,fitToPage:true,fitToWidth:1,fitToHeight:1,horizontalCentered:true,printArea:`A1:${colLetter(lastCol)}${sr}`,margins:{left:0.25,right:0.25,top:0.3,bottom:0.3,header:0.1,footer:0.1}};
+ return ws;
+}
+
+// ---- salary summary sheet (all guards, all selected units) ----
+function addSummarySheet(wb,units,month,filter,used){
+ const {border,fill,center,styleHead,banner,byName}=xlKit();
+ const label=monthLabel(month),unitIds=new Set(units.map(u=>u.id));
+ const entries=monthEntries(month).filter(a=>unitIds.has(a.unitId));
+ const wsS=wb.addWorksheet(safeSheetName('Summary',used),{views:[{state:'frozen',ySplit:4}]});
+ wsS.properties.tabColor={argb:'FF245EEA'};
+ banner(wsS,1,'Hawkeye Integrated Services — Monthly Duty Summary (for salary)',6,15,true,'FF10213B',28);
+ banner(wsS,2,`Month: ${label}   |   ${filter==='ALL'?'All sites':units[0].name}`,6,11,false,'FF475569',20);
+ banner(wsS,3,'Reg Days = days worked   |   OT Shifts = extra shifts (double duty, or a second site on the same day)   |   Total Shifts = Reg Days + OT Shifts',6,9,false,'FF64748B',18);
+ ['Sr','Guard Name','Reg Days','OT Shifts','Total Shifts','Site-wise shifts'].forEach((h,i)=>{const c=wsS.getCell(4,i+1);c.value=h;styleHead(c)});
+ wsS.getRow(4).height=24;
+ const sumAll=summarize(entries);
+ const sIds=new Set(Object.keys(sumAll));units.forEach(u=>unitRoster(u).forEach(g=>sIds.add(g.id)));
+ const sg=[...sIds].map(guardById).filter(Boolean).sort(byName);
+ let tReg=0,tOt=0,tTot=0;
+ sg.forEach((g,i)=>{
+  const s=sumAll[g.id]||{reg:0,ot:0,total:0,by:{}};tReg+=s.reg;tOt+=s.ot;tTot+=s.total;
+  const r=5+i;
+  wsS.getCell(r,1).value=i+1;wsS.getCell(r,2).value=g.name;wsS.getCell(r,3).value=s.reg;wsS.getCell(r,4).value=s.ot;wsS.getCell(r,5).value=s.total;
+  wsS.getCell(r,6).value=Object.entries(s.by).map(([n,c])=>`${n}: ${c}`).join('  ·  ')||'—';
+  for(let c=1;c<=6;c++){const cell=wsS.getCell(r,c);cell.border=border;cell.alignment=c===2||c===6?{vertical:'middle',horizontal:'left'}:center}
+  wsS.getCell(r,2).font={bold:true};wsS.getCell(r,5).font={bold:true,color:{argb:'FF1D4ED8'}};
+  if(s.ot>0)wsS.getCell(r,4).font={bold:true,color:{argb:'FF92400E'}};
+ });
+ const tr=5+sg.length;
+ wsS.getCell(tr,2).value=`Total guards: ${sg.length}`;wsS.getCell(tr,3).value=tReg;wsS.getCell(tr,4).value=tOt;wsS.getCell(tr,5).value=tTot;
+ for(let c=1;c<=6;c++){const cell=wsS.getCell(tr,c);cell.fill=fill('FFEEF3FA');cell.border=border;cell.font={bold:true};cell.alignment=c===2?{vertical:'middle',horizontal:'left'}:center}
+ [6,28,11,11,13,60].forEach((w,i)=>wsS.getColumn(i+1).width=w);
+ wsS.pageSetup={orientation:'portrait',paperSize:9,fitToPage:true,fitToWidth:1,fitToHeight:0};
+ return wsS;
+}
+
+// ---- Download ONE unit's attendance sheet as its own Excel file (to attach to that unit's bill) ----
+async function exportUnitExcel(unitId){
+ try{
+  if(!excelReady())return;
+  const u=unitById(unitId);if(!u){alert('That site no longer exists.');return}
+  const month=document.getElementById('reportMonth').value||monthLocal();
+  const wb=newWorkbook();addUnitSheet(wb,u,month,new Set());
+  await saveWorkbook(wb,`Hawkeye_Attendance_${fileSafe(u.name)}_${fileSafe(monthLabel(month))}.xlsx`);
+ }catch(e){console.error(e);alert('Excel export failed: '+(e.message||String(e)))}
+}
+// ---- Download every unit, each as a SEPARATE Excel file ----
+async function exportAllUnitsSeparate(){
+ const filter=document.getElementById('reportUnit').value||'ALL';
+ const units=state.units.filter(u=>filter==='ALL'||u.id===filter);
+ if(!units.length){alert('Add at least one site first.');return}
+ if(units.length>1&&!confirm(`This will download ${units.length} separate Excel files, one per unit.\n\nIf your browser asks, choose "Allow" for multiple downloads.`))return;
+ for(const u of units){await exportUnitExcel(u.id);await new Promise(r=>setTimeout(r,700))}
+}
+// ---- One combined workbook: Summary sheet + one tab per unit ----
+async function exportMonthly(){
+ try{
+  if(!excelReady())return;
+  const month=document.getElementById('reportMonth').value||monthLocal();
+  const filter=document.getElementById('reportUnit').value||'ALL';
+  const units=state.units.filter(u=>filter==='ALL'||u.id===filter);
+  if(!units.length){alert('Add at least one site first.');return}
+  const wb=newWorkbook(),used=new Set();
+  addSummarySheet(wb,units,month,filter,used);
+  units.forEach(u=>addUnitSheet(wb,u,month,used));
+  await saveWorkbook(wb,`Hawkeye_Attendance_${fileSafe(monthLabel(month))}_${filter==='ALL'?'All_Units':fileSafe(units[0].name)}.xlsx`);
+ }catch(e){console.error(e);alert('Excel export failed: '+(e.message||String(e)))}
+}
+
+// ---- Attendance Records -> Excel: guard names down, dates 1..31 across (one landscape page per site) ----
+async function exportRecordsExcel(){
+ try{
+  if(!excelReady())return;
+  const month=document.getElementById('recordsMonth').value||monthLocal(),unit=document.getElementById('recordsUnit').value||'ALL',q=norm(document.getElementById('recordsGuard').value);
+  const units=state.units.filter(u=>unit==='ALL'||u.id===unit);
+  if(!units.length){alert('Add at least one site first.');return}
+  const wb=newWorkbook(),used=new Set();
+  units.forEach(u=>addUnitSheet(wb,u,month,used,q));
+  await saveWorkbook(wb,`Hawkeye_Attendance_${unit==='ALL'?'All_Sites':fileSafe(units[0].name)}_${fileSafe(monthLabel(month))}.xlsx`);
+ }catch(e){console.error(e);alert('Excel export failed: '+(e.message||String(e)))}
+}
+// Raw backup of every attendance entry (CSV)
+function exportAll(){const rows=[['Date','Guard name','Site','Status (P / 2D / A)','Shifts']];state.attendance.slice().sort((a,b)=>a.date.localeCompare(b.date)).forEach(a=>rows.push([a.date,guardById(a.guardId)?.name||'Guard removed',unitById(a.unitId)?.name||'Site removed',a.status||'P',shiftsOf(a)]));csvDownload('Hawkeye_All_Attendance.csv',rows)}
+
+// ---------- Live Sheet (click-to-mark grid, synced to attendance records) ----------
+function sheetCtx(){return {unitId:document.getElementById('sheetUnit').value,month:document.getElementById('sheetMonth').value||monthLocal()}}
+function renderSheet(){
+ const {unitId,month}=sheetCtx(),u=unitById(unitId),head=document.getElementById('sheetHead'),body=document.getElementById('sheetBody');
+ if(!u){head.innerHTML='';body.innerHTML='<tr><td class="empty">Select a site to see its sheet.</td></tr>';return}
+ const D=daysInMonth(month),q=norm(document.getElementById('sheetSearch').value);
+ const ue=monthEntries(month).filter(a=>a.unitId===unitId),map={};
+ ue.forEach(a=>{map[a.guardId+'|'+a.date]=a.status});
+ const ids=new Set([...unitRoster(u).map(g=>g.id),...ue.map(a=>a.guardId)]);
+ const gs=[...ids].map(guardById).filter(g=>g&&norm(g.name).includes(q)).sort((a,b)=>a.name.localeCompare(b.name));
+ let h='<tr><th class="nm">Guard</th>';for(let d=1;d<=D;d++)h+=`<th>${d}</th>`;
+ head.innerHTML=h+'<th>Reg</th><th>OT</th><th>Total</th><th>Fill</th></tr>';
+ if(!gs.length){body.innerHTML=`<tr><td colspan="${D+5}" class="empty">No guards on this site yet. Add them in Units & Guards.</td></tr>`;return}
+ let tReg=0,tOt=0,rows='';
+ gs.forEach(g=>{
+  let reg=0,ot=0,r=`<tr><td class="nm"><b>${esc(g.name)}</b></td>`;
+  for(let d=1;d<=D;d++){
+   const date=month+'-'+String(d).padStart(2,'0'),st=map[g.id+'|'+date]||'-';
+   if(st==='P')reg++;else if(st==='2D'){reg++;ot++}
+   r+=`<td class="sc sc-${st==='-'?'off':st}" onclick="cycleCell('${esc(g.id)}',${d})">${st}</td>`;
+  }
+  tReg+=reg;tOt+=ot;
+  rows+=r+`<td><b>${reg}</b></td><td><b style="color:#a16207">${ot}</b></td><td><b style="color:#1d4ed8">${reg+ot}</b></td><td><button class="btn secondary" style="min-height:30px;padding:4px 8px" onclick="fillRow('${esc(g.id)}')">All P</button></td></tr>`;
+ });
+ rows+=`<tr style="background:#eef3fa;font-weight:800"><td class="nm" style="background:#eef3fa">Total</td><td colspan="${D}"></td><td>${tReg}</td><td>${tOt}</td><td>${tReg+tOt}</td><td></td></tr>`;
+ body.innerHTML=rows;
+}
+function cycleCell(guardId,day){
+ const {unitId,month}=sheetCtx();if(!unitId)return;
+ const date=month+'-'+String(day).padStart(2,'0');
+ const i=state.attendance.findIndex(a=>a.guardId===guardId&&a.unitId===unitId&&a.date===date);
+ const cur=i>-1?state.attendance[i].status:'-',next={'-':'P','P':'2D','2D':'A','A':'-'}[cur]||'P';
+ if(next==='-'){if(i>-1)state.attendance.splice(i,1)}
+ else if(i>-1){state.attendance[i].status=next;state.attendance[i].updatedAt=new Date().toISOString()}
+ else state.attendance.push({id:crypto.randomUUID?crypto.randomUUID():String(Date.now())+Math.random(),date,unitId,guardId,status:next,createdAt:new Date().toISOString()});
+ save();
+}
+function fillRow(guardId){
+ const {unitId,month}=sheetCtx();if(!unitId)return;
+ if(!confirm('Mark every empty day this month as Present for this guard?'))return;
+ for(let d=1;d<=daysInMonth(month);d++){
+  const date=month+'-'+String(d).padStart(2,'0');
+  if(!state.attendance.some(a=>a.guardId===guardId&&a.unitId===unitId&&a.date===date))
+   state.attendance.push({id:crypto.randomUUID?crypto.randomUUID():String(Date.now())+Math.random(),date,unitId,guardId,status:'P',createdAt:new Date().toISOString()});
+ }
+ save();
+}
+document.getElementById('sheetExcel').addEventListener('click',async()=>{
+ try{if(!excelReady())return;const {unitId,month}=sheetCtx(),u=unitById(unitId);if(!u){alert('Select a site first.');return}
+  const wb=newWorkbook();addUnitSheet(wb,u,month,new Set());
+  await saveWorkbook(wb,`Hawkeye_Attendance_${fileSafe(u.name)}_${fileSafe(monthLabel(month))}.xlsx`);
+ }catch(e){console.error(e);alert('Excel export failed: '+(e.message||String(e)))}
+});
+['sheetUnit','sheetMonth','sheetSearch'].forEach(id=>document.getElementById(id).addEventListener('input',renderSheet));
+document.getElementById('sheetMonth').value=monthLocal();
+
 document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x===b));document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('active',p.id===b.dataset.tab));renderAll()}));
-document.getElementById('markPresent').addEventListener('click',markPresent);document.getElementById('clearEntry').addEventListener('click',()=>{document.getElementById('dutyGuard').value=''});
+document.getElementById('markPresent').addEventListener('click',markPresent);document.getElementById('clearEntry').addEventListener('click',()=>{document.getElementById('dutyGuard').value='';document.getElementById('dutyType').value='P'});
 document.getElementById('addUnit').addEventListener('click',addUnit);document.getElementById('addGuard').addEventListener('click',addGuard);
 document.getElementById('dutyUnit').addEventListener('change',()=>{updateGuardSelect();renderDaily()});document.getElementById('dutyDate').addEventListener('change',renderDaily);
 ['reportMonth','reportSearch','reportUnit'].forEach(id=>document.getElementById(id).addEventListener('input',renderDashboard));
 ['recordsMonth','recordsUnit','recordsGuard'].forEach(id=>document.getElementById(id).addEventListener('input',renderRecords));
-document.getElementById('exportCsv').addEventListener('click',exportMonthly);document.getElementById('exportAllCsv').addEventListener('click',exportAll);
+document.getElementById('exportCsv').addEventListener('click',exportMonthly);document.getElementById('exportAllUnits').addEventListener('click',exportAllUnitsSeparate);document.getElementById('exportRecordsXl').addEventListener('click',exportRecordsExcel);
 document.getElementById('dutyDate').value=todayLocal();document.getElementById('reportMonth').value=monthLocal();document.getElementById('recordsMonth').value=monthLocal();
 document.getElementById('loginBtn').addEventListener('click',signIn);
 document.getElementById('loginPassword').addEventListener('keydown',e=>{if(e.key==='Enter')signIn()});
