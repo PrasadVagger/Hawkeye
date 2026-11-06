@@ -160,7 +160,7 @@ function updateGuardSelect(){
 // Duty status: 'P' = present (1 shift), '2D' = double duty / OT (2 shifts), 'A' = absent (0 shifts).
 function shiftsOf(a){return a.status==='2D'?2:(a.status==='A'?0:1)}
 function isPresent(a){return a.status!=='A'}
-function presentHeads(date,unitId){return attendanceFor(date,unitId).filter(isPresent)}
+function presentShifts(date,unitId){return attendanceFor(date,unitId).reduce((n,a)=>n+shiftsOf(a),0)}
 function statusPill(a){return a.status==='2D'?'<span class="pill amber">2D · DOUBLE DUTY</span>':(a.status==='A'?'<span class="pill red">ABSENT</span>':'<span class="pill green">PRESENT</span>')}
 // Per guard: regular days = distinct dates worked, OT shifts = extra shifts beyond one per date, total = all shifts.
 function summarize(entries){
@@ -201,8 +201,8 @@ function deleteUnit(id){const u=unitById(id);if(!u)return;if(!confirm(`Delete ${
 function monthEntries(month){return state.attendance.filter(a=>a.date.startsWith(month))}
 function renderDaily(){
  const date=document.getElementById('dutyDate').value||todayLocal(),unitId=document.getElementById('dutyUnit').value,u=unitById(unitId);
- const all=attendanceFor(date).filter(isPresent),siteAll=attendanceFor(date,unitId),site=siteAll.filter(isPresent);
- document.getElementById('dayPresent').textContent=all.length;document.getElementById('siteExpected').textContent=u?u.capacity:0;document.getElementById('sitePresent').textContent=site.length;document.getElementById('siteVacant').textContent=u?Math.max(0,u.capacity-site.length):0;
+ const siteAll=attendanceFor(date,unitId),dayShifts=presentShifts(date),siteShifts=presentShifts(date,unitId);
+ document.getElementById('dayPresent').textContent=dayShifts;document.getElementById('siteExpected').textContent=u?u.capacity:0;document.getElementById('sitePresent').textContent=siteShifts;document.getElementById('siteVacant').textContent=u?Math.max(0,u.capacity-siteShifts):0;
  document.getElementById('dailySubtitle').textContent=`${date} · ${u?u.name:'No site selected'}`;
  const rows=siteAll.slice().sort((a,b)=>(guardById(a.guardId)?.name||'').localeCompare(guardById(b.guardId)?.name||''));
  document.getElementById('dailyRows').innerHTML=rows.length?rows.map(a=>`<tr><td>${esc(guardById(a.guardId)?.name||'Guard removed')}</td><td>${esc(unitById(a.unitId)?.name||'Site removed')}</td><td>${esc(a.date)}</td><td>${statusPill(a)}</td><td><button class="btn danger" onclick="removeAttendance('${esc(a.id)}')">Undo</button></td></tr>`).join(''):'<tr><td colspan="5" class="empty">No present entries for this site and date yet.</td></tr>';
@@ -213,10 +213,10 @@ function renderDashboard(){
  const sum=summarize(filteredEntries);
  const summaries=state.guards.map(g=>{const s=sum[g.id]||{reg:0,ot:0,total:0,by:{}};return {g,reg:s.reg,ot:s.ot,count:s.total,by:s.by,units:Object.keys(s.by)}}).filter(x=>x.g&&(!query||norm(x.g.name).includes(query))).sort((a,b)=>b.count-a.count||a.g.name.localeCompare(b.g.name));
  document.getElementById('mGuards').textContent=new Set(filteredEntries.filter(isPresent).map(a=>a.guardId)).size;document.getElementById('mDuties').textContent=filteredEntries.reduce((n,a)=>n+shiftsOf(a),0);document.getElementById('mUnits').textContent=(filter==='ALL'?state.units:state.units.filter(u=>u.id===filter)).length;
- const today=todayLocal(),vacantUnits=state.units.filter(u=>u.capacity>presentHeads(today,u.id).length&&(!filter||filter==='ALL'||u.id===filter));document.getElementById('mVacancies').textContent=vacantUnits.length;
+ const today=todayLocal(),vacantUnits=state.units.filter(u=>u.capacity>presentShifts(today,u.id)&&(!filter||filter==='ALL'||u.id===filter));document.getElementById('mVacancies').textContent=vacantUnits.length;
  document.getElementById('guardSummary').innerHTML=summaries.length?summaries.map(x=>`<tr><td><b>${esc(x.g.name)}</b></td><td>${x.reg}</td><td>${x.ot?`<b style="color:#a16207">${x.ot}</b>`:0}</td><td><b>${x.count}</b></td><td>${x.units.length}</td><td>${Object.entries(x.by).map(([n,c])=>`${esc(n)}: ${c}`).join(' · ')||'—'}</td></tr>`).join(''):'<tr><td colspan="6" class="empty">No matching duties for this month.</td></tr>';
  const us=state.units.filter(u=>filter==='ALL'||u.id===filter);
- document.getElementById('unitSummary').innerHTML=us.length?us.map(u=>{const roster=unitRoster(u).length,monthCount=entries.filter(a=>a.unitId===u.id).reduce((n,a)=>n+shiftsOf(a),0),todayCount=presentHeads(today,u.id).length,vac=Math.max(0,u.capacity-todayCount);return `<tr><td><b>${esc(u.name)}</b></td><td>${u.capacity}</td><td>${roster}</td><td>${monthCount}</td><td>${todayCount}</td><td><b>${vac}</b></td><td>${vac?'<span class="pill amber">UNDERSTRENGTH</span>':'<span class="pill green">FILLED</span>'}</td><td><button class="btn secondary" onclick="exportUnitExcel('${esc(u.id)}')">⬇ Excel</button></td></tr>`}).join(''):'<tr><td colspan="8" class="empty">Add sites in Units & Guards.</td></tr>';
+ document.getElementById('unitSummary').innerHTML=us.length?us.map(u=>{const roster=unitRoster(u).length,monthCount=entries.filter(a=>a.unitId===u.id).reduce((n,a)=>n+shiftsOf(a),0),todayCount=presentShifts(today,u.id),vac=Math.max(0,u.capacity-todayCount);return `<tr><td><b>${esc(u.name)}</b></td><td>${u.capacity}</td><td>${roster}</td><td>${monthCount}</td><td>${todayCount}</td><td><b>${vac}</b></td><td>${vac?'<span class="pill amber">UNDERSTRENGTH</span>':'<span class="pill green">FILLED</span>'}</td><td><button class="btn secondary" onclick="exportUnitExcel('${esc(u.id)}')">⬇ Excel</button></td></tr>`}).join(''):'<tr><td colspan="8" class="empty">Add sites in Units & Guards.</td></tr>';
 }
 function renderRoster(){
  document.getElementById('rosterRows').innerHTML=state.units.length?state.units.map(u=>`<tr><td><b>${esc(u.name)}</b></td><td>${u.capacity}</td><td>${unitRoster(u).length}</td><td>${esc(u.supervisor||'—')}</td><td><button class="btn secondary" onclick="editUnit('${esc(u.id)}')">Edit</button> <button class="btn danger" onclick="deleteUnit('${esc(u.id)}')">Delete</button></td></tr>`).join(''):'<tr><td colspan="5" class="empty">No sites added yet.</td></tr>';
