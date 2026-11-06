@@ -178,6 +178,7 @@ function markPresent(){
  if(existing){existing.status=type;existing.updatedAt=new Date().toISOString()}
  else state.attendance.push({id:crypto.randomUUID?crypto.randomUUID():String(Date.now())+Math.random(),date,unitId,guardId,status:type,createdAt:new Date().toISOString()});
  save();
+ document.getElementById('dutyType').value='P'; // <-- NEW LINE: resets back to Present
 }
 function removeAttendance(id){if(confirm('Remove this attendance entry?')){state.attendance=state.attendance.filter(a=>a.id!==id);save()}}
 function addUnit(){
